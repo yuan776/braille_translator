@@ -5,10 +5,11 @@ A simple Flask web application that translates English text to Braille using the
 ## Features
 
 - Clean, modern web interface
-- Real-time Braille translation
+- Real-time Braille translation using Grade 1 Unified English Braille
 - Copy Braille text to clipboard
 - Responsive design for mobile and desktop
-- Grade 2 Unified English Braille support
+- No external dependencies required for translation
+- Supports letters, numbers, and common punctuation
 
 ## Local Setup
 
@@ -94,7 +95,7 @@ Render's free tier puts apps to sleep after 15 minutes of inactivity. To prevent
 
 - **Frontend**: HTML/CSS/JavaScript for a responsive user interface
 - **Backend**: Flask server that receives translation requests
-- **Translation**: Uses the Liblouis library (`python-liblouis`) to convert English to Grade 2 Unified English Braille
+- **Translation**: Uses a built-in Grade 1 Braille character mapping to convert English to Braille Unicode patterns
 - **API Endpoint**: `/api/translate` accepts POST requests with JSON data
 
 ## API Usage
@@ -135,7 +136,7 @@ braille_translator/
 ## Technologies Used
 
 - **Flask**: Web framework
-- **Liblouis**: Braille translation
+- **Built-in Braille Character Mapping**: Grade 1 Braille translation using Unicode Braille patterns
 - **HTML/CSS/JavaScript**: Frontend
 - **Render**: Hosting platform
 
@@ -145,17 +146,13 @@ This project is open source and available under the MIT License.
 
 ## Troubleshooting
 
-### "ModuleNotFoundError: No module named 'louis'"
-- Make sure you've installed all dependencies: `pip install -r requirements.txt`
-- Restart your development server
-
-### App is slow on Render
-- This is normal for free tier. Use the Cron-job.org tip to keep it warm!
-
 ### Translation not working
 - Check your internet connection
 - Try with a simpler text input first
 - Check the browser console for errors (F12)
+
+### App is slow on Render
+- This is normal for free tier. Use the Cron-job.org tip to keep it warm!
 
 ## Contributing
 
