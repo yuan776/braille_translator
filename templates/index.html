@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to Braille Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⠠⠠⠠⠠⠠ English to Braille Translator</h1>
+            <p class="subtitle">Convert English text to Braille seamlessly</p>
+        </div>
+
+        <div class="translator-card">
+            <div class="input-section">
+                <label for="englishText">Enter English Text:</label>
+                <textarea 
+                    id="englishText" 
+                    placeholder="Type something to translate to Braille..."
+                    rows="6"
+                ></textarea>
+            </div>
+
+            <button id="translateBtn" class="translate-btn">Translate to Braille</button>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <div id="resultSection" class="result-section" style="display: none;">
+                <div class="result-item">
+                    <label>English:</label>
+                    <div id="originalText" class="result-text"></div>
+                </div>
+
+                <div class="result-item">
+                    <label>Braille:</label>
+                    <div id="brailleText" class="result-text braille-text"></div>
+                </div>
+
+                <button id="copyBtn" class="copy-btn">📋 Copy Braille</button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <p>Translating...</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>About Braille Translation</h3>
+            <p>
+                This translator uses the Liblouis library to convert English text to Grade 2 Unified English Braille.
+                Braille is a tactile writing system used by people who are blind or visually impaired.
+            </p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
