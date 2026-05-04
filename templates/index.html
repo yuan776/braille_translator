@@ -83,15 +83,28 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="comments-section">
-        <h3>Comments &amp; Suggestions</h3>
-        <div id="disqus_thread"></div>
-        <noscript>Please enable JavaScript to view comments.</noscript>
+        <div class="comments-section">
+            <button class="comments-toggle" id="commentsToggle">
+                Comments &amp; Suggestions <span id="commentsArrow">▼</span>
+            </button>
+            <div id="commentsBody" style="display:none;">
+                <div id="disqus_thread"></div>
+                <noscript>Please enable JavaScript to view comments.</noscript>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        document.getElementById('commentsToggle').addEventListener('click', function() {
+            var body = document.getElementById('commentsBody');
+            var arrow = document.getElementById('commentsArrow');
+            var open = body.style.display !== 'none';
+            body.style.display = open ? 'none' : 'block';
+            arrow.textContent = open ? '▼' : '▲';
+        });
+    </script>
 
     <!-- GoatCounter analytics: sign up free at https://www.goatcounter.com
          Replace YOUR_CODE with your GoatCounter site code -->

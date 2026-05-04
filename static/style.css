@@ -320,17 +320,31 @@ textarea:focus {
 }
 
 .comments-section {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 30px;
-    margin-top: 30px;
-    color: #333;
+    margin-top: 20px;
 }
 
-.comments-section h3 {
-    color: #667eea;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
+.comments-toggle {
+    width: 100%;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease;
+}
+
+.comments-toggle:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+#commentsBody {
+    background: white;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
 }
 
 @media (max-width: 600px) {
@@ -370,7 +384,4 @@ textarea:focus {
         min-width: 100%;
     }
 
-    .comments-section {
-        padding: 20px;
-    }
 }
