@@ -75,20 +75,38 @@ def generate_braille_image(braille_text):
         padding = 50
         line_spacing = 100
         
-        # Use default font - more compatible across systems
-        font = ImageFont.load_default()
+        # Use a TrueType font that supports Unicode braille characters (U+2800–U+28FF)
+        font = None
+        font_candidates = [
+            "/System/Library/Fonts/Apple Braille.ttf",
+            "/System/Library/Fonts/SFNSMono.ttf",
+            "/System/Library/Fonts/Monaco.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            "/usr/share/fonts/truetype/freefont/FreeMono.ttf",
+        ]
+        for path in font_candidates:
+            try:
+                font = ImageFont.truetype(path, size=48)
+                break
+            except (IOError, OSError):
+                continue
+        if font is None:
+            font = ImageFont.load_default()
         
         # Split text into lines
         lines = braille_text.split('\n')
-        
-        # Calculate image dimensions
-        # For default font, estimate character width as 8 pixels
-        char_width = 12
-        max_chars = max(len(line) for line in lines) if lines else 1
-        
-        img_width = (max_chars * char_width) + (padding * 2)
+
+        # Calculate image dimensions using actual font metrics
+        def line_width(text):
+            if hasattr(font, 'getbbox'):
+                bbox = font.getbbox(text or ' ')
+                return bbox[2] - bbox[0]
+            return len(text) * 12
+
+        max_line_w = max((line_width(line) for line in lines), default=1)
+        img_width = max_line_w + (padding * 2)
         img_height = (len(lines) * line_spacing) + (padding * 2)
-        
+
         # Ensure minimum size
         img_width = max(img_width, 400)
         img_height = max(img_height, 300)
@@ -131,7 +149,7 @@ def download_braille():
             img_io,
             mimetype='image/png',
             as_attachment=True,
-            attachment_filename=filename
+            download_name=filename
         )
     except Exception as e:
         error_msg = str(e)
