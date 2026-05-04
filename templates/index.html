@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English to Braille Translator</title>
+    <title>BCA Invention Convention - English to Braille Translator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
+        <div class="inventor-section">
+            <div class="inventor-card">
+                <img src="{{ url_for('static', filename='melinda.jpg') }}" alt="Melinda Yuan" class="inventor-photo">
+                <div class="inventor-info">
+                    <h2>BCA Invention Convention</h2>
+                    <p class="inventor-name">By Melinda Yuan</p>
+                    <p class="inventor-mission">Dedicated to helping people in need through innovative technology</p>
+                </div>
+            </div>
+        </div>
+
         <div class="header">
             <h1>⠠⠠⠠⠠⠠ English to Braille Translator</h1>
-            <p class="subtitle">Convert English text to Braille seamlessly</p>
+            <p class="subtitle">Helping the blind and visually impaired access written information</p>
         </div>
 
         <div class="translator-card">
@@ -47,11 +58,26 @@
         </div>
 
         <div class="info-section">
-            <h3>About Braille Translation</h3>
+            <h3>About This Project</h3>
             <p>
-                This translator converts English text to Grade 1 Unified English Braille using Unicode Braille character patterns.
-                Braille is a tactile writing system used by people who are blind or visually impaired.
+                This English to Braille Translator is Melinda Yuan's BCA Invention Convention project, 
+                created with a mission to help people in need. Braille is a tactile writing system used by 
+                people who are blind or visually impaired, allowing them to read and write independently.
             </p>
+            <p>
+                By converting digital text to Braille, this tool helps bridge the gap in accessibility and 
+                empowers the blind and visually impaired community to access written information more easily.
+            </p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">285 Million</span>
+                    <span class="stat-label">Blind & Visually Impaired Worldwide</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2% of Blind</span>
+                    <span class="stat-label">Can Read Braille</span>
+                </div>
+            </div>
         </div>
     </div>
 

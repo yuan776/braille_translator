@@ -1,6 +1,11 @@
 # English to Braille Translator
+## BCA Invention Convention Project by Melinda Yuan
 
-A simple Flask web application that translates English text to Braille using the Liblouis library.
+A simple Flask web application that translates English text to Braille. This project was created to help the blind and visually impaired access written information more easily.
+
+### Mission
+
+Melinda Yuan developed this translator as part of the BCA Invention Convention to showcase innovation dedicated to helping people in need. With 285 million blind and visually impaired people worldwide, improving accessibility through technology is crucial. This tool bridges the gap by converting digital text to Grade 1 Unified English Braille.
 
 ## Features
 
