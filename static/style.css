@@ -199,8 +199,29 @@ textarea:focus {
     letter-spacing: 1px;
 }
 
+.braille-image-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.braille-image-container img {
+    max-width: 100%;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
 .copy-btn {
-    width: 100%;
+    flex: 1;
+    min-width: 200px;
     padding: 12px;
     background: #4caf50;
     color: white;
@@ -214,6 +235,29 @@ textarea:focus {
 
 .copy-btn:hover {
     background: #45a049;
+}
+
+.download-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.download-btn:hover {
+    background: #0b7dda;
+}
+
+.download-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 .loading {
