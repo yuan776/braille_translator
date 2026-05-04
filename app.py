@@ -70,12 +70,12 @@ def translate():
 def generate_braille_image(braille_text):
     """Generate an image from Braille text."""
     # Image settings
-    padding = 40
-    line_spacing = 40
+    padding = 50
+    line_spacing = 80
     char_spacing = 8
     
     # Use a monospace font that supports Braille
-    font_size = 48
+    font_size = 96
     try:
         # Try to use a system font
         font = ImageFont.truetype("/System/Library/Fonts/Monaco.dfont", font_size)
