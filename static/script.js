@@ -76,20 +76,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function generateBrailleImage(brailleText) {
-        fetch('/api/download-braille', {
+        fetch('/api/braille-preview', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ braille: brailleText })
         })
-        .then(response => response.blob())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to generate preview');
+            }
+            return response.blob();
+        })
         .then(blob => {
             const url = URL.createObjectURL(blob);
             brailleImageContainer.innerHTML = `<img src="${url}" alt="Braille Text">`;
         })
         .catch(error => {
             console.error('Error generating image:', error);
+            brailleImageContainer.innerHTML = '<p style="color: red;">Could not generate image preview</p>';
         });
     }
 
@@ -123,7 +129,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 filename: 'braille_translation.png'
             })
         })
-        .then(response => response.blob())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to download image');
+            }
+            return response.blob();
+        })
         .then(blob => {
             // Create download link
             const url = URL.createObjectURL(blob);
@@ -133,13 +144,18 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            
+            // Clean up after a delay
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
 
             downloadBtn.disabled = false;
             downloadBtn.textContent = '🖨️ Download as Image';
         })
         .catch(error => {
             console.error('Download error:', error);
+            alert('Error downloading image: ' + error.message);
             downloadBtn.disabled = false;
             downloadBtn.textContent = '🖨️ Download as Image';
         });

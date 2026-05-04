@@ -76,15 +76,27 @@ def generate_braille_image(braille_text):
     
     # Use a monospace font that supports Braille
     font_size = 96
-    try:
-        # Try to use a system font
-        font = ImageFont.truetype("/System/Library/Fonts/Monaco.dfont", font_size)
-    except:
+    font = None
+    
+    # Try to find a suitable font
+    font_paths = [
+        "/System/Library/Fonts/Monaco.dfont",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
+        "/Windows/Fonts/consola.ttf",
+        "C:\\Windows\\Fonts\\consola.ttf"
+    ]
+    
+    for font_path in font_paths:
         try:
-            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", font_size)
+            font = ImageFont.truetype(font_path, font_size)
+            break
         except:
-            # Fallback to default font
-            font = ImageFont.load_default()
+            continue
+    
+    # If no font found, use default
+    if font is None:
+        font = ImageFont.load_default()
     
     # Split text into lines
     lines = braille_text.split('\n')
@@ -96,12 +108,19 @@ def generate_braille_image(braille_text):
     # Calculate image dimensions
     max_width = 0
     for line in lines:
-        bbox = temp_draw.textbbox((0, 0), line, font=font)
-        width = bbox[2] - bbox[0]
-        max_width = max(max_width, width)
+        try:
+            bbox = temp_draw.textbbox((0, 0), line, font=font)
+            width = bbox[2] - bbox[0]
+            max_width = max(max_width, width)
+        except:
+            max_width = len(line) * 50  # fallback width estimation
     
     img_width = max_width + (padding * 2)
     img_height = (len(lines) * line_spacing) + (padding * 2)
+    
+    # Ensure minimum size
+    img_width = max(img_width, 400)
+    img_height = max(img_height, 300)
     
     # Create image
     img = Image.new('RGB', (img_width, img_height), color='white')
@@ -137,7 +156,32 @@ def download_braille():
             img_io,
             mimetype='image/png',
             as_attachment=True,
-            download_name=filename
+            attachment_filename=filename
+        )
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/braille-preview', methods=['POST'])
+def braille_preview():
+    """Generate Braille image preview for display on page"""
+    try:
+        data = request.get_json()
+        braille_text = data.get('braille', '').strip()
+        
+        if not braille_text:
+            return jsonify({'error': 'No Braille text'}), 400
+        
+        # Generate image
+        img = generate_braille_image(braille_text)
+        
+        # Save to bytes
+        img_io = io.BytesIO()
+        img.save(img_io, 'PNG', quality=95)
+        img_io.seek(0)
+        
+        return send_file(
+            img_io,
+            mimetype='image/png'
         )
     except Exception as e:
         return jsonify({'error': str(e)}), 500
