@@ -85,6 +85,32 @@
         </div>
     </div>
 
+    <div class="comments-section">
+        <h3>Comments &amp; Suggestions</h3>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view comments.</noscript>
+    </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- GoatCounter analytics: sign up free at https://www.goatcounter.com
+         Replace YOUR_CODE with your GoatCounter site code -->
+    <script data-goatcounter="https://yuan776.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <!-- Disqus comments: sign up free at https://disqus.com
+         Replace YOUR_SHORTNAME with your Disqus shortname -->
+    <script>
+        var disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = 'braille-translator-main';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://yuan776.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
 </body>
 </html>

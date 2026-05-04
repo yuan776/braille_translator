@@ -319,6 +319,20 @@ textarea:focus {
     text-align: center;
 }
 
+.comments-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 30px;
+    color: #333;
+}
+
+.comments-section h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
 @media (max-width: 600px) {
     .header h1 {
         font-size: 1.8rem;
@@ -354,5 +368,9 @@ textarea:focus {
 
     .stat-item {
         min-width: 100%;
+    }
+
+    .comments-section {
+        padding: 20px;
     }
 }
