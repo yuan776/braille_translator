@@ -70,70 +70,44 @@ def translate():
 
 def generate_braille_image(braille_text):
     """Generate an image from Braille text."""
-    # Image settings
-    padding = 50
-    line_spacing = 80
-    char_spacing = 8
-    
-    # Use a monospace font that supports Braille
-    font_size = 96
-    font = None
-    
-    # Try to find a suitable font
-    font_paths = [
-        "/System/Library/Fonts/Monaco.dfont",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
-        "/Windows/Fonts/consola.ttf",
-        "C:\\Windows\\Fonts\\consola.ttf"
-    ]
-    
-    for font_path in font_paths:
-        try:
-            font = ImageFont.truetype(font_path, font_size)
-            break
-        except:
-            continue
-    
-    # If no font found, use default
-    if font is None:
+    try:
+        # Image settings
+        padding = 50
+        line_spacing = 100
+        
+        # Use default font - more compatible across systems
         font = ImageFont.load_default()
-    
-    # Split text into lines
-    lines = braille_text.split('\n')
-    
-    # Create temporary image to measure text
-    temp_img = Image.new('RGB', (1, 1))
-    temp_draw = ImageDraw.Draw(temp_img)
-    
-    # Calculate image dimensions
-    max_width = 0
-    for line in lines:
-        try:
-            bbox = temp_draw.textbbox((0, 0), line, font=font)
-            width = bbox[2] - bbox[0]
-            max_width = max(max_width, width)
-        except:
-            max_width = len(line) * 50  # fallback width estimation
-    
-    img_width = max_width + (padding * 2)
-    img_height = (len(lines) * line_spacing) + (padding * 2)
-    
-    # Ensure minimum size
-    img_width = max(img_width, 400)
-    img_height = max(img_height, 300)
-    
-    # Create image
-    img = Image.new('RGB', (img_width, img_height), color='white')
-    draw = ImageDraw.Draw(img)
-    
-    # Draw text
-    y_position = padding
-    for line in lines:
-        draw.text((padding, y_position), line, fill='black', font=font)
-        y_position += line_spacing
-    
-    return img
+        
+        # Split text into lines
+        lines = braille_text.split('\n')
+        
+        # Calculate image dimensions
+        # For default font, estimate character width as 8 pixels
+        char_width = 12
+        max_chars = max(len(line) for line in lines) if lines else 1
+        
+        img_width = (max_chars * char_width) + (padding * 2)
+        img_height = (len(lines) * line_spacing) + (padding * 2)
+        
+        # Ensure minimum size
+        img_width = max(img_width, 400)
+        img_height = max(img_height, 300)
+        
+        # Create image
+        img = Image.new('RGB', (img_width, img_height), color='white')
+        draw = ImageDraw.Draw(img)
+        
+        # Draw text
+        y_position = padding
+        for line in lines:
+            if line.strip():  # Only draw non-empty lines
+                draw.text((padding, y_position), line, fill='black', font=font)
+            y_position += line_spacing
+        
+        return img
+    except Exception as e:
+        print(f"Error in generate_braille_image: {str(e)}")
+        raise
 
 @app.route('/api/download-braille', methods=['POST'])
 def download_braille():
@@ -160,7 +134,11 @@ def download_braille():
             attachment_filename=filename
         )
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        error_msg = str(e)
+        print(f"Error in download_braille: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Failed to download: {error_msg}'}), 500
 
 @app.route('/api/braille-preview', methods=['POST'])
 def braille_preview():
@@ -185,8 +163,11 @@ def braille_preview():
             'image': f'data:image/png;base64,{img_base64}'
         })
     except Exception as e:
-        print(f"Error in braille_preview: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        error_msg = str(e)
+        print(f"Error in braille_preview: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Failed to generate image: {error_msg}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
