@@ -12,6 +12,10 @@ Melinda Yuan developed this translator as part of the BCA Invention Convention t
 - Clean, modern web interface
 - Real-time Braille translation using Grade 1 Unified English Braille
 - Copy Braille text to clipboard
+- Download translation as a PNG image (rendered with Apple Braille font on macOS)
+- Live Braille image preview in the browser
+- Visitor analytics via [GoatCounter](https://www.goatcounter.com) (country, device, browser — no cookies)
+- Collapsible comments & suggestions section powered by [Disqus](https://disqus.com)
 - Responsive design for mobile and desktop
 - No external dependencies required for translation
 - Supports letters, numbers, and common punctuation
@@ -19,7 +23,7 @@ Melinda Yuan developed this translator as part of the BCA Invention Convention t
 ## Local Setup
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.13 or higher
 - pip (Python package manager)
 
 ### Installation
@@ -101,26 +105,27 @@ Render's free tier puts apps to sleep after 15 minutes of inactivity. To prevent
 - **Frontend**: HTML/CSS/JavaScript for a responsive user interface
 - **Backend**: Flask server that receives translation requests
 - **Translation**: Uses a built-in Grade 1 Braille character mapping to convert English to Braille Unicode patterns
-- **API Endpoint**: `/api/translate` accepts POST requests with JSON data
+- **Image generation**: Pillow renders Braille Unicode characters using a system TrueType font and returns a PNG
+- **Analytics**: GoatCounter script counts page visits and collects country, browser, OS, and screen size — no cookies required
+- **Comments**: Disqus embed loaded on demand (collapsed by default) so it doesn't distract from the main content
+- **API Endpoints**:
+  - `POST /api/translate` — translate text to Braille
+  - `POST /api/braille-preview` — return a base64 PNG preview
+  - `POST /api/download-braille` — download translation as a PNG file
 
 ## API Usage
 
-### Endpoint: POST `/api/translate`
+### `POST /api/translate`
+**Request:** `{"text": "Hello world"}`
+**Response:** `{"original": "Hello world", "braille": "⠓⠑⠇⠇⠕ ⠺⠕⠗⠇⠙"}`
 
-**Request:**
-```json
-{
-  "text": "Hello world"
-}
-```
+### `POST /api/braille-preview`
+**Request:** `{"braille": "⠓⠑⠇⠇⠕"}`
+**Response:** `{"image": "<base64 PNG>"}` — rendered image for in-page preview
 
-**Response:**
-```json
-{
-  "original": "Hello world",
-  "braille": "⠓⠑⠇⠇⠕ ⠺⠕⠗⠇⠙"
-}
-```
+### `POST /api/download-braille`
+**Request:** `{"braille": "⠓⠑⠇⠇⠕", "filename": "braille.png"}`
+**Response:** PNG file download
 
 ## Project Structure
 
@@ -141,9 +146,12 @@ braille_translator/
 ## Technologies Used
 
 - **Flask**: Web framework
+- **Pillow**: Image generation for PNG download and preview
 - **Built-in Braille Character Mapping**: Grade 1 Braille translation using Unicode Braille patterns
+- **GoatCounter**: Privacy-friendly visitor analytics (free)
+- **Disqus**: Comments and suggestions (free)
 - **HTML/CSS/JavaScript**: Frontend
-- **Render**: Hosting platform
+- **Render**: Hosting platform (Python 3.13)
 
 ## License
 
