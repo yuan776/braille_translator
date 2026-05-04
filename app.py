@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, send_file
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
+import base64
 
 app = Flask(__name__)
 
@@ -174,16 +175,17 @@ def braille_preview():
         # Generate image
         img = generate_braille_image(braille_text)
         
-        # Save to bytes
+        # Convert to base64
         img_io = io.BytesIO()
         img.save(img_io, 'PNG', quality=95)
         img_io.seek(0)
+        img_base64 = base64.b64encode(img_io.getvalue()).decode('utf-8')
         
-        return send_file(
-            img_io,
-            mimetype='image/png'
-        )
+        return jsonify({
+            'image': f'data:image/png;base64,{img_base64}'
+        })
     except Exception as e:
+        print(f"Error in braille_preview: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

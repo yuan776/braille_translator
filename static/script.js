@@ -85,17 +85,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to generate preview');
+                throw new Error('HTTP Error: ' + response.status);
             }
-            return response.blob();
+            return response.json();
         })
-        .then(blob => {
-            const url = URL.createObjectURL(blob);
-            brailleImageContainer.innerHTML = `<img src="${url}" alt="Braille Text">`;
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            brailleImageContainer.innerHTML = `<img src="${data.image}" alt="Braille Text">`;
         })
         .catch(error => {
             console.error('Error generating image:', error);
-            brailleImageContainer.innerHTML = '<p style="color: red;">Could not generate image preview</p>';
+            brailleImageContainer.innerHTML = '<p style="color: red;">Could not generate image preview: ' + error.message + '</p>';
         });
     }
 
